@@ -1,5 +1,7 @@
 #include <iostream>
 #include <algorithm>
+#include <iomanip>
+#include <initializer_list>
 
 class Macierz2D {
 private:
@@ -184,9 +186,10 @@ bool Macierz2D::operator<(Macierz2D& matrix) {
 }
 
 std::ostream& operator<<(std::ostream& stream, const Macierz2D& matrix) {
+	std::cout << std::left;
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 3; j++) {
-			stream << matrix.m_dane[i][j] << " ";
+			stream << std::setw(8) << matrix.m_dane[i][j] << " ";
 		}
 		stream << std::endl;
 	}
@@ -244,25 +247,39 @@ float Macierz2D::value() {
 }
 
 int main() {
-
-	Macierz2D matrix1(1);
-	Macierz2D matrix2(2);
-	Macierz2D suma(1);
-	suma = matrix1 + matrix2;
-	std::cout << suma;
-	suma += matrix1;
-	std::cout << suma;
-	suma *= 15;
-	//std::cin >> matrix2;
-	suma = matrix1 *= matrix2;
-	std::cout << suma;
-	suma = suma.transpose();
-	std::cout << suma;
-	Macierz2D matrix[3];
-	std::cin >> matrix[0] >> matrix[1] >> matrix[2];
+	float** m1, ** m2, ** m3;
+	m1 = new float* [3];
+	m2 = new float* [3];
+	m3 = new float* [3];
+	srand(static_cast<unsigned> (time(0)));
+	for (int i = 0; i < 3; i++) {
+		m1[i] = new float[3];
+		m2[i] = new float[3];
+		m3[i] = new float[3];
+		for (int j = 0; j < 3; j++) {
+			m1[i][j] = static_cast<float>(rand()) / static_cast<float>(RAND_MAX / 10);
+			m2[i][j] = static_cast<float>(rand()) / static_cast<float>(RAND_MAX / 10);
+			m3[i][j] = static_cast<float>(rand()) / static_cast<float>(RAND_MAX / 10);
+		}
+	}
+	Macierz2D matrix1(m1);
+	Macierz2D matrix2(m2);
+	Macierz2D matrix3(m3);
+	Macierz2D macierze[3] = { matrix1, matrix2, matrix3 };
+	std::cout << "Przed sortowaniem" << std::endl << std::endl;
+	std::cout << "Macierz 1" << std::endl << macierze[0] << std::endl << "Macierz 2" <<
+		std::endl <<macierze[1] << std::endl << "Macierz 3" << std::endl << macierze[2] << std::endl;
+	std::cout << "Wartosci macierzy: " << std::endl << std::endl;
+	std::cout << "Macierz 1 : " << macierze[0].value() << std::endl;
+	std::cout << "Macierz 2 : " << macierze[1].value() << std::endl;
+	std::cout << "Macierz 3 : " << macierze[2].value() << std::endl;
 	std::cout << std::endl;
-	std::cout << matrix[0] << matrix[1] << matrix[2] << std::endl;
-	std::cout << matrix[0].value()<<" " << matrix[1].value()<<" " << matrix[2].value()<<" " << std::endl;
-	std::sort(matrix, matrix + 3);
-	std::cout << matrix[0] << matrix[1] << matrix[2];
+	std::sort(macierze, macierze + 3);
+	std::cout << "Po sortowaniu" << std::endl << std::endl;
+	std::cout << "Macierz 1" << std::endl << macierze[0] << std::endl << "Macierz 2" <<
+		std::endl << macierze[1] << std::endl << "Macierz 3" << std::endl << macierze[2] << std::endl;
+	std::cout << "Mnozenie" << std::endl << std::endl;
+	std::cout << "Macierz lewa" << std::endl << macierze[0] << std::endl;
+	std::cout << "Macierz prawa" << std::endl << macierze[1] << std::endl;
+	std::cout << "Macierz wynikowa" << std::endl << macierze[0] * macierze[1] << std::endl;
 }
