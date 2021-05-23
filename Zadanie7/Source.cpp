@@ -10,6 +10,7 @@ public:
 	Macierz2D();
 	Macierz2D(float);
 	Macierz2D(float**);
+	Macierz2D(std::initializer_list<float>);
 	Macierz2D(const Macierz2D&);
 	~Macierz2D();
 	Macierz2D operator=(const Macierz2D&);
@@ -65,12 +66,24 @@ Macierz2D::Macierz2D(float** matrix) {
 	}
 }
 
+
 Macierz2D::Macierz2D(const Macierz2D& another) {
 	m_dane = new float* [3];
 	for (int i = 0; i < 3; i++) {
 		m_dane[i] = new float[3];
 		for (int j = 0; j < 3; j++) {
 			m_dane[i][j] = another.m_dane[i][j];
+		}
+	}
+}
+
+Macierz2D::Macierz2D(std::initializer_list<float> il) {
+	std::initializer_list<float>::iterator it = il.begin();
+	m_dane = new float* [3];
+	for (int i = 0; i < 3; i++) {
+		m_dane[i] = new float[3];
+		for (int j = 0; j < 3; j++) {
+			m_dane[i][j] = *it++;
 		}
 	}
 }
